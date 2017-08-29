@@ -1,0 +1,23 @@
+<script>
+
+//(function playerDefinition(player){
+		let _player = null;
+
+		function player(){
+			if(!_player) 
+				_player = document.createElement('AUDIO');
+			return _player;
+		}
+
+		function setPlayerSrc(src){
+			player().setAttribute("src", src);
+		}
+	
+		function playSong(){
+			if(player() && player().src != ``)
+				player().play();
+		}
+
+//})(window.player);
+
+</script>

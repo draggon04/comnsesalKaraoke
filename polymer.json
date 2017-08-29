@@ -1,0 +1,20 @@
+{
+	"entrypoint":"index.html",
+	"shell":"src/principal-view.html",
+	"sources":[
+
+		"src/**/*",
+		"bower.json",
+		"node_modules/**/*"
+	],
+	"extraDependencies":[
+		"package.json",
+		"bower_components/webcomponentsjs/webcomponents-loader.js"
+	],
+	"lint":{
+		"rules":["polymer-2"]
+	},
+	"builds":[
+		{"preset":"es5-bundled"}
+	]
+}

@@ -1,0 +1,46 @@
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../redux-mixin/redux-mixin.html">
+
+<dom-module id="admin-songs-view">
+	<template>		
+		
+		<paper-input id="songName" required="true" label="canción a agregar" pattern="[A-Za-z0-9\(\)\[\]- ]"></paper-input>
+		<paper-input id="songSinger" required="true" pattern="[A-Za-z0-9\(\)\[\]- ]" label="cantante"></paper-input>
+		<input type="file" id="fileUpload">
+
+		<paper-button on-click="_addSong">Agregar</paper-button>
+
+	</template>
+	<script>
+		class AdminSongsView extends ReduxMixin(Polymer.Element){
+			
+			static get is() {return `admin-songs-view`;}
+
+			static get properties(){
+				return{
+					songs:{
+						type:Array,
+						statePath:`songsToPlay`
+					}
+				}
+			}	
+
+			_addSong(){
+
+				if(!this.$.songName.validate())
+					return;
+
+				if(!this.$.songSinger.validate())
+					return;
+
+				this.dispatch({type:`ADD_SONG`, data:{song:{name:this.$.songName.value, singer:this.$.songSinger.value}}});
+			}
+
+		}
+
+		customElements.define(AdminSongsView.is, AdminSongsView);
+	</script>
+</dom-module>

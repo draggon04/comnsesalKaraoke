@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../redux-mixin/redux-mixin.html">
+
+<dom-element id="login-user">
+	<template>
+		<paper-button on-click="_signWithGoogle">Login con Google</paper-button>
+	</template>
+
+	<script>
+		(function loginUserDefinition(loginUser){
+			'use strict';
+
+			class LoginUser extends ReduxMixin(Polymer.Element){
+				
+				static get is(){return `login-user`;}
+
+				_signWithGoogle(){
+					let provider = new firebase.auth.GoogleAuthProvider();
+					auth.signInWithPopup(provider);
+				}
+
+			}
+
+			customElements.define(LoginUser.is, LoginUser);
+		})(window.loginUser);
+
+	</script>
+
+</dom-element>

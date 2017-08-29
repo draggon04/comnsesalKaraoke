@@ -1,0 +1,47 @@
+<link rel="import" href="../../bower_components/polymer-redux/polymer-redux.html">
+
+<script>
+
+	const config = {
+		apiKey: "AIzaSyBEtIvfGZcE8PZEPimtLjkcgWXcj34aquo",
+		authDomain: "nuevo-proyecto-cff85.firebaseapp.com",
+		databaseURL: "https://nuevo-proyecto-cff85.firebaseio.com",
+		projectId: "nuevo-proyecto-cff85",
+		storageBucket: "nuevo-proyecto-cff85.appspot.com",
+		messagingSenderId: "1009901662502"
+	};
+
+	firebase.initializeApp(config);
+
+	const auth=firebase.auth();
+	const db= firebase.database();
+	const sg = firebase.storage().ref();
+
+	const initialState = {
+		songsToPlay:[],
+		songs:[]
+	}
+
+	function reducer(state=initialState, action){
+		let songs;
+		switch(action.type){
+			case `ADD_SONG`:
+				db.ref(`songs`).push({name:action.data.song.name, singer:action.data.song.singer});
+				let songs= state.songs.splice(0);
+				songs.push(action.data.song);
+				return Object.assign({}, state, {songs:songs});
+			case `ADD_SONG_TO_PLAYLIST`:
+				db.ref(`songsToPlay`).push(action.data);
+				let songsToPlay = state.songs.splice(0);
+				songsToPlay.push(action.data);
+				return Object.assign({}, state, {songsToPlay:songsToPlay});
+			default:
+				return state;
+		}
+	}
+
+	const store = Redux.createStore(reducer);
+
+	ReduxMixin = PolymerRedux(store);
+	
+</script>

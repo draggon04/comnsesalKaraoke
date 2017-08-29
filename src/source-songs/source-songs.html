@@ -1,0 +1,22 @@
+<script>
+
+	sendRequest(request){
+		let xhttp = XMLHttpRequest();
+		xhttp.open(request.method, request.url, true);
+		xhttp.onreadystatechange = function(){
+			let obj = JSON.parse(this.responseText);
+			window.dispatchEvent(new CustomEvent(request.eventSuccess,{bubbles:true, composed:true, detail:obj}));
+		}
+	}
+	
+	searchSongBySingerOrBand(name, page){
+		sendRequest({url:`http://api.musixmatch.com/ws/1.1/track.search?q_artist=${name}&page_size=10&page=${page}&s_track_rating=desc&apikey=7d1ab3b095f0de8bf7c122e38b35e721`,
+			method:`GET`, eventSuccess:`getListSongs`
+		});
+	}
+
+	getListSongs(){
+
+	}
+
+</script>

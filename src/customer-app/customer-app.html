@@ -1,0 +1,57 @@
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="select-song-2-sing.html">
+<!--<link rel="import" href="../../bower_components/neon-animation/web-animations.html">-->
+
+<dom-module id="customer-app">
+	<template>
+		<select-song-2-sing></select-song-2-sing>
+		<!--<select id="Mesas" onselect="_selectTable">
+			<option value="1">Mesa 1</option>
+			<option value="2">Mesa 2</option>
+			<option value="3">Mesa 3</option>
+			<option value="4">Mesa 4</option>
+		</select>
+		<paper-input label="cantante"></paper-input>
+		<paper-button on-tap="_addSinger">Agregar Cantante</paper-button>
+		<paper-button on-tap="_finishAdd">Terminar de agregar</paper-button>
+		<template is="dom-repeat" items="[[cantantes]]" as="cantante">
+			<p>[[cantante.nombre]]</p>
+			<button cantante="[[cantante]]" on-tap="_removeSinger">X</button>
+		</template>-->
+	</template>
+	<script>
+		(function customAppDefine(customApp){
+
+			'use strict';
+			class CustomApp extends Polymer.GestureEventListeners(Polymer.Element){
+				static get is(){return `customer-app`;}			
+
+				_selectTable(){
+
+				}
+
+				_finishAdd(){
+
+				}
+
+				_addSinger(){
+
+				}
+
+				_removeSinger(){
+
+				}
+			}
+
+			customElements.define(CustomApp.is, CustomApp);
+		})(window.customApp);
+
+	</script>
+</dom-module>

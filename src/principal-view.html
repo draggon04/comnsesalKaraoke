@@ -1,0 +1,119 @@
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/shadycss/apply-shim.html">
+
+<link rel="import" href="player/player.html">
+<link rel="import" href="customer-app/customer-app.html">
+<link rel="import" href="admin-songs/admin-songs-view.html">
+
+<dom-module id="principal-view">
+	<template>
+		<style>
+			.titulo
+			{
+				background-color: blue;
+			}
+
+			.menu-title{
+				background-color:yellow;
+			}
+
+			.menu-items{
+			    background-color: orange;
+			    height: 100%;
+			    margin: -0.99rem 0 0 0;
+			    padding: 0;
+			}
+
+			nav>ul>li{
+				list-style-type: none;				
+			}
+
+			nav>ul>li>a{
+				text-decoration: none;
+			}
+		</style>
+
+		<app-location route="{{route}}"></app-location>
+		<app-route route="{{route}}" pattern="/:view" data="{{routeData}}" tail="{{routeTail}}"></app-route>
+
+		<app-drawer-layout fullbleed>
+			<app-drawer slot="drawer">
+				<app-toolbar class="menu-title" main-title><div>Menu</div></app-toolbar>
+				<div class="menu-items">
+					<nav>
+						<ul>
+							<li><a href="/CustomApp">Cliente</a></li>
+							<li><a href="/AdminSongs">Administrador de Canciones</a></li>
+						</ul>
+					</nav>
+				</div>
+			</app-drawer>
+
+			<app-header-layout>
+				<app-header slot="header" waterfall>
+					<app-toolbar main-title class="titulo"><div>Titulo Principal</div></app-toolbar>
+				</app-header>
+				<iron-pages selected="[[routeData.view]]" attr-for-selected="view" role="main">
+					<customer-app view="CustomApp"></customer-app>
+					<admin-songs-view view="AdminSongs"></admin-songs-view>
+				</iron-pages>
+
+			</app-header-layout>
+
+		</app-drawer-layout>		
+		
+	</template>
+	<script>
+
+		(function principalViewDefine(principalView){
+			'use strict'
+
+			class PrincipalView extends Polymer.Element{
+
+				static get is() {return `principal-view`;}
+
+				static get properties(){
+					return{
+						routeData:{
+							type:Object
+						},
+						view:{
+							type:String,
+							observer:`_viewChanged`
+						}
+					}
+				}
+
+				static get observers()
+				{
+					return ['_routePageChanged(routeData.view)']
+				}
+
+				_viewChanged(view){
+					console.log(`_pageChanged ${view}`)
+				}
+
+				_routePageChanged(view){
+					console.log(`_routePageChanged ${view}`);
+					this.view = view || `song2play`;					
+				}
+
+			}
+
+			customElements.define(PrincipalView.is, PrincipalView);
+
+		})(window.principalView);
+
+	</script>
+</dom-module>

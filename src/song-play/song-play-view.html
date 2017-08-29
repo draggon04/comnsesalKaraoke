@@ -1,0 +1,104 @@
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-db.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-query.html">
+
+<link rel="import" href="../player/player.html">
+
+<dom-module id="song-play-view">
+	<template>
+		
+		<style>
+			
+			.songs-2-play-list{
+				width: 100%;
+			}
+
+			.colum1{
+				width: 40%;
+				background-color:gray;
+			}
+
+			.colum2{
+				width: 40%;
+
+				background-color:gray;
+			}
+
+			.colum3{
+				width: 20%;
+				background-color:gray;
+			}
+
+			.songs-2-play-list  tbody>tr{
+				background-color: yellow;
+			}
+
+			.songs-2-play-list tbody>tr:nth-child(even){
+				background-color: lightblue;
+			}
+
+			table>tbody tr
+		</style>
+
+		<firebase-app 
+			auth-domain="mi-nuevo-proyecto-679d7.firebaseapp.com"
+			database-url="https://mi-nuevo-proyecto-679d7.firebaseio.com/"
+			api-key="AIzaSyDdNYO_tWtG95l-wTbBauCh3b9_A4h0Zag"
+			storage-bucket="mi-nuevo-proyecto-679d7.appspot.com"
+			messaging-sender-id="291707248851">
+		</firebase-app>
+
+		<firebase-query 
+			id="query" 
+			path="/songsToPlay" 
+			data="{{songsToPlay}}">
+		</firebase-query>
+	
+		<table class="songs-2-play-list">
+			<thead>
+				<tr>
+					<th class="colum1">canción</th>
+					<th class="colum2">cantantes</th>
+					<th class="colum3"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<template is="dom-repeat" items="[[songsToPlay]]" as="song">
+					<tr>
+						<td>[[song.track.track_name]]</td>
+						<td></td>
+						<td><iron-icon on-click="_playSong" icon="av:play-circle-filled"></iron-icon> </td>
+					</tr>
+				</template>
+			</tbody>
+		</table>
+	</template>
+	<script>
+		(function songPlayViewDefine(songPlayView){
+			'use strict'
+
+			class SongPlayView extends Polymer.Element{
+				static get is() {return `song-play-view`;}
+
+				static get properties(){
+					return{
+						songsToPlay:{
+							type:Array,
+							value:[]
+						}
+					}
+				}
+
+				_playSong(){
+					setPlayerSrc(`http://ra-m4a-64.cdn107.com/08/1d/73/081d73f561460ffab662d6575244cc7f.m4a`);
+					playSong();
+				}
+			}
+
+			customElements.define(SongPlayView.is, SongPlayView);
+		})(window.songPlayView);
+	</script>
+</dom-module>

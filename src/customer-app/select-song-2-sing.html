@@ -1,0 +1,100 @@
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-request.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
+
+<link rel="import" href="../redux-mixin/redux-mixin.html">
+
+<dom-module id="select-song-2-sing">
+	<template>
+		<style>
+			.item{
+				display: flex;
+			}
+		</style>
+		
+		<paper-input id="searchText" label="Nombre del Cantante"></paper-input>
+		<paper-button on-tap="_searchSong">Buscar...</paper-button>
+
+		<table>
+			<tbody>
+				<template is="dom-repeat" items="[[songsFound]]" as="song">
+					<tr>
+						<td>
+							<p>[[song.track.track_name]]</p>
+						</td>
+						<td>
+							<paper-button song="[[song]]" on-tap="_selectSong">
+								<iron-icon icon="icons:add-circle"></iron-icon>				
+							</paper-button>
+						</td>
+					</tr>	
+				</template>
+			</tbody>
+		</table>
+
+	</template>
+	<script>
+(function selectSong2SingDefinition(selectSong2Sing){
+		'use strict';
+
+		function makeRequest(method, url){
+			return new Promise(function(resolve, reject){
+				var xhr = new XMLHttpRequest();
+				xhr.open(method, url);
+				xhr.onload=function(){
+					if(this.status >=200 && this.status < 300 && this.readyState==4){
+						resolve(xhr.response);
+					}
+					else{
+						reject({
+							status: this.status,
+							statusText:xhr.statusText
+						});
+					}
+				};
+
+				xhr.onerror = function(){
+					reject({
+						status:this.status,
+						statusText:xhr.statusText
+					});
+				};
+
+				xhr.send();
+			});
+		}
+
+		class SelectSong2Sing extends ReduxMixin(Polymer.GestureEventListeners(Polymer.Element)){	
+			static get is(){return `select-song-2-sing`;}
+
+			static get properties(){
+				return{
+					songsFound:{
+						type:Array,
+						value:[]
+					}
+				}
+			}
+
+			_selectSong(event){
+				this.dispatch({type:`ADD_SONG_TO_PLAYLIST`, data: event.currentTarget.song});
+			}
+
+			async getSongs(){
+				let songsFiltred = await makeRequest('GET', `/getSongs?singer=${this.$.searchText.value}&page=1`);
+				let obj = JSON.parse(songsFiltred);
+				this.songsFound=obj.message.body.track_list;
+			}
+
+			_searchSong(event){
+				this.getSongs();
+			}
+		}
+
+		customElements.define(SelectSong2Sing.is, SelectSong2Sing);
+})(window.selectSong2Sing)
+	</script>
+</dom-module>
